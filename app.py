@@ -3,23 +3,29 @@ from dotenv import load_dotenv
 import requests
 import json
 import os
+
 load_dotenv()
-API_ACCESS_TOKEN = os.environ.get('CRYPTOQUANT_API_KEY')
 
 app = Flask(__name__)
 
+CRYPTOQUANT_API_URL = "https://api.cryptoquant.com/v1"
+
 @app.route("/")
 def index():
-    data = get_puell_multiple_data()
-    return render_template("index.html", data=json.dumps(data))
+    data_puell = get_data("/btc/network-indicator/puell-multiple", from_date="20190101", limit=1000)
+    data_mvrv = get_data("/btc/market-indicator/mvrv", from_date="20191001", limit=1000)
+    data_nupl = get_data("/btc/network-indicator/nupl", from_date="20191001", limit=1000)
+   
+    return render_template("index.html", data_puell=json.dumps(data_puell), data_mvrv=json.dumps(data_mvrv), data_nupl=json.dumps(data_nupl))
 
-def get_puell_multiple_data():
+def get_data(endpoint, **params):
+    url = CRYPTOQUANT_API_URL + endpoint
     headers = {
-        "Authorization": f"Bearer {API_ACCESS_TOKEN}"
+        "Authorization": f"Bearer {os.environ.get('CRYPTOQUANT_API_KEY')}"
     }
-    response = requests.get("https://api.cryptoquant.com/v1/btc/network-indicator/puell-multiple?window=day&from=20190101&limit=1000", headers=headers)
-    return response.json()
-
+    with requests.get(url, headers=headers, params=params) as response:
+        response.raise_for_status()
+        return response.json()
 
 if __name__ == "__main__":
     app.run(debug=True)
