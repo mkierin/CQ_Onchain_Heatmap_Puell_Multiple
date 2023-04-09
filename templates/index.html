@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
     <div class="container">
@@ -21,13 +21,13 @@
                 <a class="nav-item nav-link" id="puell-multiple">Puell Multiple</a>
                 <a class="nav-item nav-link" id="nupl">NUPL</a>
                 <a class="nav-item nav-link" id="mvrv">MVRV</a>
+                <a class="nav-item nav-link" id="new-chart">New Chart</a>
             </div>
         </nav>
         <div id="chart-puell" style="width:100%;height:500px;" data-server="{{ data_puell }}"></div>
         <div id="chart-nupl" style="width:100%;height:500px; display:none;" data-server="{{ data_nupl }}"></div>
         <div id="chart-mvrv" style="width:100%;height:500px; display:none;" data-server="{{ data_mvrv }}"></div>
-        
-        
+        <div id="chart-timeline" style="width:100%;height:500px; display:none;"></div>
     </div>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
